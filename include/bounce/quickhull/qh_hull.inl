@@ -128,7 +128,12 @@ inline void qhFace::ComputeCenterAndPlane()
 // its value at compile-time. That is particularly usefull when you want to 
 // create a stack buffer from a constant number of vertices. 
 // Due to the constexpr specifier, this function is automatically inlined.
-constexpr u32 qhGetBufferSize(u32 pointCount)
+#if defined(__cpp_constexpr) && __cpp_constexpr > 200704
+  constexpr //relaxed constexpr
+#else
+  inline
+#endif
+u32 qhGetBufferSize(u32 pointCount)
 {
 	u32 size = 0;
 
